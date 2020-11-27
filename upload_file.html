@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <title>File Manager - Upload File</title>
+  </head>
+  <body>
+    <h1>File Upload</h1>
+    <p>Send your file here {{user.first_name}}</p>
+    <form action="{% url 'upload_file' %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      Sob: <select class="" name="under">
+        <option value="0">Root</option>
+        {% for folder in folders %}
+        <option value="{{folder.id}}">{{folder.name}}</option>
+        {% endfor %}
+      </select>
+      Archive: <input type="file" name="file">
+      Name: <input type="text" name="name">
+      Privacy: <select class="" name="Privacy">
+        <option value="0">Private</option>
+        <option value="1">Public</option>
+      </select>
+      <input type="submit" name="submit" value="Submit">
+    </form>
+  </body>
+</html>
