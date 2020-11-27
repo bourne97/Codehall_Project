@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <title>File Manager - Create Folder</title>
+  </head>
+  <body>
+    <h1>Directory Creation</h1>
+    <p>Create your directory here, {{user.first_name}}</p>
+    <form action="{% url 'create_folder' %}" method="post">
+      {% csrf_token %}
+      Sob: <select class="" name="under">
+        <option value="0">Root</option>
+        {% for folder in folders %}
+        <option value="{{folder.id}}">{{folder.name}}</option>
+        {% endfor %}
+      </select>
+      Nome: <input type="text" name="name">
+      <input type="submit" name="submit" value="Submit">
+    </form>
+  </body>
+</html>
