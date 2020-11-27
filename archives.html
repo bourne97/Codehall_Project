@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <title></title>
+  </head>
+  <body>
+    <div class="container-fluid" style="height: 100px; width: 1000px">
+      {% if user %}
+      <form method="get" action="{% url 'search_user_files' user.id %}">
+      {% else %}
+      <form method="get" action="{% url 'search_all_files' %}">
+      {% endif %}
+        <div class="form-group">
+          <label for="search_file">Search for files</label>
+          {% if search %}
+          <input type="text" name="search" class="form-control" id="search_file" value="{{search}}">
+          {% else %}
+          <input type="text" name="search" class="form-control" id="search_file" placeholder="Enter the file name here ...">
+          {% endif %}
+        </div>
+      </form>
+      {% if search %}
+      <p>You searched for: <strong>{{search}}</strong></p>
+      {% endif %}
+      {% if user_files%}
+      <p>File search results:</p>
+      <div class="row">
+        {% for file in user_files %}
+        <div class="card m-3" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">{{file.name}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Sent by: {{file.uploaded_by.first_name}}</h6>
+            <a href="{% url 'view_file' file.id %}" class="card-link" target="_blank">See</a>
+            <a href="{% url 'download_file' file.id %}" class="card-link">Download</a>
+            <a href="{% url 'delete_file' file.id %}" class="card-link">Delete</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <hr>
+      <p>All results: </p>
+      {% else %}
+      Directory: {% for folder in folders_p %} / <a href="{{folder.link}}">{{folder.name}}</a> {% endfor %}<br>
+      <div class="row">
+        {% for folder in folders %}
+        <div class="card m-3" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">{{folder.name}}</h5>
+            <a href="{% url 'files' user.id folder.id %}" class="card-link">Enter</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      <div class="row">
+        {% for file in files %}
+        <div class="card m-3" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">{{file.name}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Sent by: {{file.uploaded_by.first_name}}</h6>
+            <a href="{% url 'view_file' file.id %}" class="card-link" target="_blank">See</a>
+            <a href="{% url 'download_file' file.id %}" class="card-link">Download</a>
+            <a href="{% url 'delete_file' file.id %}" class="card-link">Delete</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <script src="{% static 'js/jquery.min.js' %}" charset="utf-8"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}" charset="utf-8"></script>
+  </body>
+</html>
